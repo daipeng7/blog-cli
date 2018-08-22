@@ -1,5 +1,11 @@
 var path = require('path');
 var fs = require('fs');
+var swig = require('swig');
+
+swig.setDefaults({
+    cache: false,
+    encoding: 'utf-8'
+});
 
 /**
  * 去掉后缀
@@ -26,4 +32,17 @@ exports.createDirectory = function createDirectory(dir) {
             fs.mkdirSync(p);
         }
     }
+}
+/**
+ * swig renderFile
+ * 
+ * @param {any} file    file path
+ * @param {any} data    template data
+ */
+exports.renderFile = function(file, data) {
+    return swig.render(fs.readFileSync(file).toString(), {
+        filename: file,
+        autoescape: false,
+        locals: data
+    });
 }
